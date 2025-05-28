@@ -45,12 +45,22 @@ public class RegressaoPolinomial {
         try (BufferedReader br = new BufferedReader(new FileReader(caminho))) {
             String linha;
             while ((linha = br.readLine()) != null) {
-                String[] partes = linha.trim().split("\\s+");
-                tList.add(Double.parseDouble(partes[0]));
-                fList.add(Double.parseDouble(partes[1]));
+                linha = linha.trim();
+                if (linha.isEmpty()) continue;
+
+                String[] partes = linha.split("\\s+");
+                if (partes.length < 2) continue;
+
+                try {
+                    tList.add(Double.parseDouble(partes[0]));
+                    fList.add(Double.parseDouble(partes[1]));
+                } catch (NumberFormatException e) {
+                    System.err.println("Linha inválida ignorada: " + linha);
+                }
             }
         }
     }
+
 
     public static PolynomialFunction ajustarPolinomio(int grau) {
         WeightedObservedPoints obs = new WeightedObservedPoints();
